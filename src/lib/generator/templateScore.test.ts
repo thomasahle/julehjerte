@@ -31,7 +31,8 @@ describe('a template\'s score', () => {
 		expect(scored.terms.concave).toBeCloseTo(scored.strips.reduce((sum, c) => sum + c, 0));
 	});
 
-	it('counts the narrowest necks, narrowest first, a neck past NECK_FREE as nothing', () => {
+	it('counts each lobe\'s narrowest neck, narrowest first, a neck past NECK_FREE as nothing', () => {
+		expect(scored.necks.length).toBeLessThanOrEqual(2);
 		expect(scored.necks).toEqual([...scored.necks].sort((a, b) => a - b));
 		expect(scored.terms.thin).toBeCloseTo(scored.necks.reduce((sum, mm) => sum + Math.max(0, Math.log(NECK_FREE / mm)), 0));
 	});

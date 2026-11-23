@@ -4,9 +4,9 @@
  * design. Nothing here knows how the heart was made: it reads the two lobes'
  * cuts alone.
  *
- * - `thin`: the narrowest necks of paper a piece hangs by (`thinnestNeck`),
- *   each as log(NECK_FREE / its width), none past NECK_FREE: halving a neck
- *   costs the same wherever it started.
+ * - `thin`: the narrowest neck of paper a piece hangs by on each lobe's
+ *   template (`thinnestNeck`), as log(NECK_FREE / its width), none past
+ *   NECK_FREE: halving a neck costs the same wherever it started.
  * - `hidden`: the length of the hidden cuts, where both lobes cut the same
  *   line and the picture shows none, in hundredths of the square's side.
  * - `concave`: each strip of paper's share of its convex hull that it leaves
@@ -19,14 +19,12 @@
  * so that hearts can be compared term by term.
  */
 import type { BezierSegment, Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
-import { PRINT_WIDTH_MM, thinnestNeck, type Spared, type WeakPiece } from '$lib/geometry/paperNecks';
+import { PRINT_WIDTH_MM, thinnestNeck } from '$lib/geometry/paperNecks';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { cutTipCounts } from './cutQuality';
 
 /** The width, in millimetres on the printed template, from which a neck costs nothing. */
 export const NECK_FREE = 6;
-/** How many of the narrowest necks are counted. */
-export const NECKS = 4;
 /** What a needle counts as, in sharp tips. */
 const NEEDLE = 3;
 /** How near, in hundredths of the square's side, the two lobes' cuts lie where they are one hidden cut. */
@@ -41,7 +39,7 @@ export const WEIGHTS: TemplateTerms = { thin: 40, hidden: 1, concave: 50, tips: 
 export type TemplateScore = {
 	score: number;
 	terms: TemplateTerms;
-	/** The narrowest necks, in millimetres, narrowest first. */
+	/** Each lobe's narrowest neck, in millimetres, narrowest first. */
 	necks: number[];
 	/** Each strip's concavity, the left lobe's then the right's, across each lobe. */
 	strips: number[];
@@ -87,19 +85,9 @@ function hull(points: Point[]): Point[] {
 	return [...half(sorted), ...half(sorted.reverse())];
 }
 
-/** The narrowest necks of a heart's paper, narrowest first: each found with the paper about those before it
- * left out, and none narrower than the one before (with that paper cut away, a way round it may look narrower
- * than any the heart has). */
-export function narrowestNecks(design: HeartDesign, count = NECKS): number[] {
-	const necks: number[] = [], spared: Spared[] = [];
-	for (let k = 0; k < count; k++) {
-		const at: WeakPiece[] = [], mm = thinnestNeck(design, { at, spared });
-		if (!Number.isFinite(mm)) break;
-		necks.push(Math.max(mm, necks[necks.length - 1] ?? 0));
-		if (!at.length) break;
-		spared.push(at[0]);
-	}
-	return necks;
+/** The narrowest neck of each lobe's paper, narrowest first; a lobe where nothing hangs by a neck has none. */
+export function narrowestNecks(design: HeartDesign): number[] {
+	return (['left', 'right'] as const).map(lobe => thinnestNeck(design, { lobes: [lobe] })).filter(Number.isFinite).sort((a, b) => a - b);
 }
 
 /** A heart's templates scored (see the module's comment). */
