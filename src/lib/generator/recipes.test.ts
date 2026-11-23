@@ -2,11 +2,12 @@ import { describe, it, expect } from 'vitest';
 import { chooseRecipe, isTopology, recipeEdges, recipeOutline, ringCorners, type MotifRecipe, type RecipeChord, type RecipeFile } from './recipes';
 import { islandOn, motifFit, motifRings, nestingOf, topologyConstruction, topologyOf } from './topologyRecipes';
 import { boardOutline } from './boardOutline';
-import { fromTopology, generate, knownOf, spurless, storedHearts } from './generate';
+import { constructionOf, fromTopology, generate, knownOf, spurless, storedHearts } from './generate';
+import { sharedCuts } from './cutMoves';
 import { betterCuts, cutMeasures } from './cutQuality';
 import { picture } from './picture';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
-import { thinnestNeck } from '$lib/geometry/paperNecks';
+import { paperFaults, thinnestNeck } from '$lib/geometry/paperNecks';
 import { slow } from './slow.test-helpers';
 import type { Point, Ring } from './geometry';
 import heart from '../../../static/generator/motifs/heart.json';
@@ -237,6 +238,20 @@ describe('stored recipes', () => {
 		const [plain] = storedHearts(on, [topology], true, 1, {}), made = fromTopology({ ...on, recipes: [topology] })!;
 		expect(cutMeasures(made.design, rings)[0]).toBeLessThan(cutMeasures(plain.design, rings)[0]);
 	});
+
+	slow('draws a board heart\'s hidden cuts straight from the corners of the squares, not from the middle of their sides', () => {
+		// The star on five strips at 88% with 9% of air: its own heart's cuts to the edge squares left the middle of
+		// each square's arc and ran through a bend; from the corner where the arc meets the square's line each is
+		// shorter, and that paper's line runs on into it where it turned back on itself.
+		const asked = { mode: 'figure' as const, name: 'Star', contours: star.contours as Ring[], colors: { left: '#ffffff', right: '#b91313' }, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .88, gap: 9, recipes: (board as unknown as RecipeFile).recipes };
+		const heart = generate(asked), cuts = sharedCuts(constructionOf(heart.design)!.edges);
+		const corner = (p: Point) => [20, 40, 60, 80].some(v => Math.abs(p[0] - v) < 1e-6 || Math.abs(p[1] - v) < 1e-6) && Math.abs(Math.hypot(p[0] - 50, p[1] - 50) - 44) < .3;
+		const fromCorner = cuts.filter(cut => cut.length > 1 && Math.hypot(cut[0][0] - cut[cut.length - 1][0], cut[0][1] - cut[cut.length - 1][1]) > 8 && [cut[0], cut[cut.length - 1]].some(corner));
+		expect(fromCorner.length).toBeGreaterThanOrEqual(6);
+		for (const cut of fromCorner) expect(cut).toHaveLength(2);
+		expect(heart.hardToCut).toBeUndefined();
+		expect(paperFaults(heart.design).weak).toBe(0);
+	}, 60000);
 
 	slow('refines the house on five strips at 99% until no paper tears where its recipe\'s cuts left two necks', () => {
 		const asked = { mode: 'figure' as const, name: 'House', contours: house.contours as Ring[], colors: { left: '#ffffff', right: '#b91313' }, style: 'board' as const, frame: 'circle' as const, frameSize: 70, scale: .99, gap: 3 };

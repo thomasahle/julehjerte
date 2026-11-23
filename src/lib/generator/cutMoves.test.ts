@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bendShared, followArc, sharedPieces, slideSwitch, straightenShared, switchesOf } from './cutMoves';
+import { bendShared, followArc, redrawShared, sharedCuts, sharedPieces, slideSwitch, slideToCorner, straightenShared, switchesOf } from './cutMoves';
 import type { Edge, Point } from './geometry';
 
 // A square ring cut by one shared cut from its top side to its bottom side: on
@@ -63,5 +63,37 @@ describe('moves of a construction\'s cuts', () => {
 		// Not where an end is off the circle.
 		expect(followArc(chord, [90, 50], [50, 90], [50, 50], 30)).toBeUndefined();
 	});
-});
 
+	it('slides a switch to the next corner of a paper\'s outline, that paper\'s line then running on into the cut', () => {
+		// Towards B along the top side: its corner at (10, 0). B's line, which came down the right side, along the
+		// top and back into the cut, now turns into the cut at the corner; A cuts the whole top side.
+		const { edges: slid, to } = slideToCorner(edges, [5, 0], 'B')!;
+		expect(to).toEqual([10, 0]);
+		expect(at(slid, 'A')).toBeCloseTo(at(edges, 'A') + 5);
+		expect(at(slid, 'B')).toBeCloseTo(at(edges, 'B') - 5);
+		expect(sharedPieces(slid)).toEqual([[[10, 0], [5, 10]]]);
+		// Towards A: the corner at (0, 0). Not farther than its reach, nor from a point that is no switch.
+		expect(slideToCorner(edges, [5, 0], 'A')!.to).toEqual([0, 0]);
+		expect(slideToCorner(edges, [5, 0], 'A', 4)).toBeUndefined();
+		expect(slideToCorner(edges, [0, 0], 'A')).toBeUndefined();
+		// On a frame's own lines too (a board's circle and grid), and through vertices that are no corners.
+		const frame = edges.map((e): Edge => e.family === 'AB' ? e : { ...e, kind: 'frame' });
+		const split = [...frame.filter(e => !(e.from[0] === 5 && e.to[0] === 10 && e.from[1] === 0)), { from: [5, 0], to: [8, 0], family: 'B', kind: 'frame' }, { from: [8, 0], to: [10, 0], family: 'B', kind: 'frame' }] as Edge[];
+		expect(slideToCorner(split, [5, 0], 'B')!.to).toEqual([10, 0]);
+		// None where the outline meets another cut before a corner: a second cut leaving the top side at (8, 0).
+		const met: Edge[] = [...edges.filter(e => !(e.family === 'B' && e.from[0] === 5 && e.from[1] === 0)),
+			outline([5, 0], [8, 0], 'B'), outline([8, 0], [10, 0], 'B'), { from: [8, 0], to: [8, -3], family: 'AB', kind: 'shared' }];
+		expect(slideToCorner(met, [5, 0], 'B')).toBeUndefined();
+	});
+
+	it('follows a shared cut through its bends, and draws it anew straight between two points', () => {
+		const bent = bendShared(edges, [5, 0], [5, 10], 1)!, [cut] = sharedCuts(bent);
+		expect(sharedCuts(bent)).toHaveLength(1);
+		expect([cut[0], cut[cut.length - 1]].map(p => p.join(',')).sort()).toEqual(['5,0', '5,10']);
+		expect(cut).toHaveLength(3);
+		const straight = redrawShared(bent, cut, cut[0], cut[cut.length - 1])!;
+		expect(sharedPieces(straight)).toHaveLength(1);
+		expect(straight).toHaveLength(edges.length);
+		expect(redrawShared(bent, cut, cut[0], cut[0])).toBeUndefined();
+	});
+});

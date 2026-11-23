@@ -85,6 +85,86 @@ export function slideSwitch(edges: Edge[], at: Point, by: number): Edge[] | unde
 	}
 }
 
+/** The least turn, in degrees, that makes a vertex of an outline a corner (see `slideToCorner`). */
+const CORNER_TURN = 30;
+
+/**
+ * The switch at `at` slid along the outline of paper `towards` to that
+ * outline's next corner (where it turns by more than CORNER_TURN: a blob's
+ * corner on a board, a motif's tip or notch), and put on it: the outline it
+ * passes changes paper, as in `slideSwitch`, so the other paper's line, which
+ * came along it to the switch, now cuts it on to the corner, and `towards`'
+ * line runs from the corner straight on into the shared cut, where it turned
+ * back on itself at the switch. With the edges, the corner. None where the
+ * outline meets another cut before a corner, or runs farther than `reach`.
+ * A frame's own lines are outlines here: on a board the switch slides along
+ * the circle to where it meets a line of the grid.
+ */
+export function slideToCorner(edges: Edge[], at: Point, towards: 'A' | 'B', reach = Infinity): { edges: Edge[]; to: Point } | undefined {
+	const near = incidence(edges), ids = near.get(key(at));
+	// A switch on the motif's outline or on the frame's own lines (a board's circle).
+	if (!ids || ids.length !== 3 || ids.map(i => edges[i]!.family).sort().join(' ') !== 'A AB B') return;
+	const other = towards === 'A' ? 'B' : 'A', out = edges.map(e => ({ ...e }));
+	const shared = ids.find(i => edges[i]!.family === 'AB')!;
+	let gone = 0, point = at, edge = ids.find(i => edges[i]!.family === towards)!;
+	for (;;) {
+		const e = edges[edge]!, far = same(e.from, point) ? e.to : e.from;
+		gone += length(e);
+		if (gone > reach) return;
+		const next = near.get(key(far))!.filter(i => i !== edge);
+		if (next.length !== 1 || edges[next[0]!]!.family !== towards) return;
+		out[edge] = { ...e, family: other };
+		const n = edges[next[0]!]!, on = same(n.from, far) ? n.to : n.from;
+		const u = [far[0] - point[0], far[1] - point[1]], v = [on[0] - far[0], on[1] - far[1]];
+		const turn = Math.abs(Math.atan2(u[0] * v[1] - u[1] * v[0], u[0] * v[0] + u[1] * v[1])) * 180 / Math.PI;
+		if (turn > CORNER_TURN) {
+			const s = out[shared]!;
+			out[shared] = same(s.from, at) ? { ...s, from: far } : { ...s, to: far };
+			return { edges: out, to: far };
+		}
+		point = far;
+		edge = next[0]!;
+	}
+}
+
+/** A construction's shared cuts, each from end to end through its bends (two
+ * shared pieces meeting and nothing else): its points in order. */
+export function sharedCuts(edges: Edge[]): Point[][] {
+	const near = incidence(edges), bend = (p: Point) => { const ids = near.get(key(p))!; return ids.length === 2 && ids.every(i => edges[i]!.family === 'AB'); };
+	const used = new Set<number>(), cuts: Point[][] = [];
+	edges.forEach((first, i) => {
+		if (first.family !== 'AB' || used.has(i)) return;
+		// From this piece both ways to the cut's ends.
+		const walk = (at: Point): Point[] => {
+			const points = [at];
+			let last = i, here = at;
+			while (bend(here)) {
+				const next = near.get(key(here))!.find(j => j !== last)!;
+				if (used.has(next)) break;
+				used.add(next);
+				const e = edges[next]!;
+				here = same(e.from, here) ? e.to : e.from;
+				points.push(here);
+				last = next;
+			}
+			return points;
+		};
+		used.add(i);
+		cuts.push([...walk(first.from).reverse(), ...walk(first.to)]);
+	});
+	return cuts;
+}
+
+/** The shared cut through `points` (see `sharedCuts`) drawn anew, straight
+ * from `from` to `to`: its pieces gone, one in their place. */
+export function redrawShared(edges: Edge[], points: Point[], from: Point, to: Point): Edge[] | undefined {
+	if (same(from, to)) return;
+	const piece = (e: Edge) => e.family === 'AB' && points.some((p, k) => k + 1 < points.length
+		&& ((same(e.from, p) && same(e.to, points[k + 1]!)) || (same(e.to, p) && same(e.from, points[k + 1]!))));
+	const first = edges.find(piece);
+	return first && [...edges.filter(e => !piece(e)), { ...first, from, to }];
+}
+
 /**
  * The shared cut's straight piece from `from` to `to` bent `by` to its left
  * (a new point at its middle, moved across it); where `from` is already a bend
