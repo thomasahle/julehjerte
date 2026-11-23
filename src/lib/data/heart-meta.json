@@ -781,7 +781,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/firkloever-hjerte.jpg",
+      "width": 1200,
+      "height": 1200
+    },
     "film": {
       "v": "efc7c06e1f",
       "bytes": 4225204
@@ -1269,7 +1273,11 @@
       "mirrorSymmetry": false,
       "sharedTemplate": false
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/bauhaus.jpg",
+      "width": 1200,
+      "height": 1200
+    },
     "film": null
   },
   "amy-weave-1": {
@@ -1511,7 +1519,11 @@
       "mirrorSymmetry": false,
       "sharedTemplate": false
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/squares.jpg",
+      "width": 1200,
+      "height": 1200
+    },
     "film": {
       "v": "ebc9d517f0",
       "bytes": 1438544
@@ -2457,7 +2469,11 @@
       "mirrorSymmetry": false,
       "sharedTemplate": true
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/origami.jpg",
+      "width": 1200,
+      "height": 1200
+    },
     "film": {
       "v": "aaa8406043",
       "bytes": 5082867
@@ -2487,7 +2503,11 @@
       "mirrorSymmetry": true,
       "sharedTemplate": true
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/juletrae.jpg",
+      "width": 1200,
+      "height": 1200
+    },
     "film": {
       "v": "5daa0a4c3c",
       "bytes": 2374408
@@ -2638,7 +2658,11 @@
       "mirrorSymmetry": false,
       "sharedTemplate": false
     },
-    "photo": null,
+    "photo": {
+      "src": "/hearts/photos/santa.jpg",
+      "width": 1200,
+      "height": 1200
+    },
     "film": {
       "v": "e557b30202",
       "bytes": 4258886

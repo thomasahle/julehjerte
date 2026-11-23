@@ -89,6 +89,24 @@
       "/small/hearts/photos/ball-960.jpg"
     ]
   ],
+  "/hearts/photos/bauhaus.jpg": [
+    [
+      160,
+      "/small/hearts/photos/bauhaus-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/bauhaus-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/bauhaus-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/bauhaus-960.jpg"
+    ]
+  ],
   "/hearts/photos/circle.jpg": [
     [
       160,
@@ -153,6 +171,24 @@
       "/small/hearts/photos/fire-stjerner-720.jpg"
     ]
   ],
+  "/hearts/photos/firkloever-hjerte.jpg": [
+    [
+      160,
+      "/small/hearts/photos/firkloever-hjerte-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/firkloever-hjerte-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/firkloever-hjerte-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/firkloever-hjerte-960.jpg"
+    ]
+  ],
   "/hearts/photos/hjertekloever.jpg": [
     [
       160,
@@ -169,6 +205,24 @@
     [
       960,
       "/small/hearts/photos/hjertekloever-960.jpg"
+    ]
+  ],
+  "/hearts/photos/juletrae.jpg": [
+    [
+      160,
+      "/small/hearts/photos/juletrae-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/juletrae-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/juletrae-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/juletrae-960.jpg"
     ]
   ],
   "/hearts/photos/kompasrose.jpg": [
@@ -235,6 +289,24 @@
       "/small/hearts/photos/nihon-720.jpg"
     ]
   ],
+  "/hearts/photos/origami.jpg": [
+    [
+      160,
+      "/small/hearts/photos/origami-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/origami-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/origami-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/origami-960.jpg"
+    ]
+  ],
   "/hearts/photos/penrose-ring.jpg": [
     [
       160,
@@ -275,6 +347,42 @@
     [
       160,
       "/small/hearts/photos/permo-sol-160.jpg"
+    ]
+  ],
+  "/hearts/photos/santa.jpg": [
+    [
+      160,
+      "/small/hearts/photos/santa-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/santa-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/santa-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/santa-960.jpg"
+    ]
+  ],
+  "/hearts/photos/squares.jpg": [
+    [
+      160,
+      "/small/hearts/photos/squares-160.jpg"
+    ],
+    [
+      480,
+      "/small/hearts/photos/squares-480.jpg"
+    ],
+    [
+      720,
+      "/small/hearts/photos/squares-720.jpg"
+    ],
+    [
+      960,
+      "/small/hearts/photos/squares-960.jpg"
     ]
   ],
   "/hearts/photos/stjerne.jpg": [
