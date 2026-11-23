@@ -1133,11 +1133,11 @@ const SHORTEN_NEAR = 15;
 const SHORTEN_CLEAR = 1.2, SHORTEN_CLEAR_ENDS = 2.5;
 
 /**
- * A board heart with its hidden cuts drawn shorter and straighter, where that
- * cuts no worse: each hidden cut straight from end to end, where it ran
+ * A figure's heart with its hidden cuts drawn shorter and straighter, where
+ * that cuts no worse: each hidden cut straight from end to end, where it ran
  * through bends, and each of its ends put on the next corner of the outline
- * it ends on (the corner of a square where the circle meets its line, a tip
- * or notch of the motif) where that is nearer its other end or meets the
+ * it ends on (on a board the corner of a square where the circle meets its
+ * line; a tip or notch of the motif) where that is nearer its other end or meets the
  * outline less sharply, or on the point of the motif's outline nearest its
  * other end. An end in the middle of a side makes one paper's line
  * come along the side and turn back into the cut; from the corner that line
@@ -1152,7 +1152,7 @@ const SHORTEN_CLEAR = 1.2, SHORTEN_CLEAR_ENDS = 2.5;
  */
 function shortened(request: GeneratorRequest, heart: GeneratorResult): GeneratorResult {
 	const construction = constructionOf(heart.design);
-	if (request.mode !== 'figure' || request.style !== 'board' || !construction || heart.hardToCut) return heart;
+	if (request.mode !== 'figure' || !construction || heart.hardToCut) return heart;
 	const shown = picture(spurless(request), knownOf(heart, request.scale ?? .7));
 	if (!shown?.rings.length) return heart;
 	type Drawn = { heart: GeneratorResult; m: number[]; edges: Edge[] };
@@ -1594,7 +1594,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	}
 	making++;
 	try {
-		if (making > 1 || !request.recipes?.some(isTopology)) return withMirrorMean(request);
+		if (making > 1) return withMirrorMean(request);
+		if (!request.recipes?.some(isTopology)) return shortened(request, withMirrorMean(request));
 		let own: GeneratorResult | undefined, failure: unknown;
 		try {
 			own = generateTried(request);

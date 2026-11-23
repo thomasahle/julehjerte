@@ -805,10 +805,11 @@ describe('frames from real hearts', () => {
  it('joins the candy cane\'s stripes where they come nearest, not along their sides', () => {
   // In the checked tips at 90% each stripe was entered and left at its
   // extremes along the chain: the cuts between them ran along the stripes'
-  // slanted sides, six needles.
+  // slanted sides, six needles. Of the two sharp tips then left, one goes
+  // with a hidden cut drawn anew, shorter (see `shortened`).
   const { design, hardToCut } = generate({ mode: 'figure', name: 'Candy cane', contours: candyCane.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .9, gap: 3 });
   expect(hardToCut).toBeUndefined();
-  expect(cutTipCounts(design)).toEqual([0, 2]);
+  expect(cutTipCounts(design)).toEqual([0, 1]);
  });
  slow('keeps the space around a sunburst\'s motif a little smaller, rather than drawing it at four fifths of the size it says', () => {
   // At 90% no heart keeping the space around the cat can be finished. Without
