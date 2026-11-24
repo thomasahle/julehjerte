@@ -1484,7 +1484,7 @@ export const translations = {
     // The site's own browser title and search description: the front page's,
     // and the fallback for any page without its own
     siteBrowserTitle: 'Christmas heart templates – {count} free printable PDFs',
-    siteMetaDescription: '{count} free templates for woven Danish Christmas hearts (julehjerter), from easy to hard. Print as A4 PDFs, follow the step-by-step guide, or design your own.',
+    siteMetaDescription: '{count} free woven heart basket templates: Danish Christmas hearts (julehjerter), easy to hard. Print as A4 PDFs, follow the weaving guide, or design your own.',
 
     // Site navigation, the header and the skip link
     siteNavigation: 'Main navigation',
