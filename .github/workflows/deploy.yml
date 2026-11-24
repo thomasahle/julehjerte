@@ -202,6 +202,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, inverse]
     steps:
+      # IndexNow (scripts/indexnow.mjs): note the sitemap that is live now, and
+      # after the deploy tell the search engines which pages are new or
+      # changed. Neither step can fail the deploy.
+      - name: Checkout the IndexNow script
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/indexnow.mjs
+          sparse-checkout-cone-mode: false
+      - name: Note the pages live before this deploy
+        continue-on-error: true
+        run: node scripts/indexnow.mjs snapshot "$RUNNER_TEMP/indexnow-before.json"
+
       # Pages now and then leaves an upload hanging until the action gives up
       # (it deploys in ten seconds otherwise). Give the first try three
       # minutes, then deploy the same build once more.
@@ -215,3 +227,7 @@ jobs:
         id: again
         if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
+
+      - name: Tell the search engines which pages changed
+        continue-on-error: true
+        run: node scripts/indexnow.mjs submit "$RUNNER_TEMP/indexnow-before.json"
