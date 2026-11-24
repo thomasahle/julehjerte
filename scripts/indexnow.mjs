@@ -82,12 +82,18 @@ async function submit(file, { all, dryRun }) {
 	console.log(`${everything ? 'Every page' : 'Changed pages'} (${urlList.length}):\n${urlList.join('\n')}`);
 	if (dryRun) return;
 
-	const response = await fetch(ENDPOINT, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json; charset=utf-8' },
-		body: JSON.stringify({ host: new URL(SITE).host, key: KEY, keyLocation: KEY_URL, urlList })
-	});
-	// 200: taken. 202: taken, the key is still to be checked.
+	// 200: taken. 202: taken, the key is still to be checked. 403: the key file is not
+	// seen yet (it was right after the deploy that first served it), so try again.
+	let response;
+	for (let tries = 0; ; tries++) {
+		response = await fetch(ENDPOINT, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json; charset=utf-8' },
+			body: JSON.stringify({ host: new URL(SITE).host, key: KEY, keyLocation: KEY_URL, urlList })
+		});
+		if (response.status !== 403 || tries >= 4) break;
+		await sleep(30_000);
+	}
 	if (response.status !== 200 && response.status !== 202) {
 		throw new Error(`IndexNow answered ${response.status}: ${(await response.text()).slice(0, 300)}`);
 	}
