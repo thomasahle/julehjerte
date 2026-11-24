@@ -37,7 +37,7 @@ import {
 } from '$lib/inverse/toHeartDesign';
 import type { HeartColors, HeartDesign, LobeId, Vec } from '$lib/types/heart';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
-import { lobesDrawnAlike, mapPointBetweenLobes, mirroredLobes } from '$lib/utils/symmetry';
+import { lobesDrawnAlike, lobesShareTemplate, mapPointBetweenLobes, mirroredLobes } from '$lib/utils/symmetry';
 import { holdingWidth, paperFaults, paperHolds, PAPER_NECK_MM, PRINT_WIDTH_MM, thinnestNeck, type Spared, type WeakPiece } from '$lib/geometry/paperNecks';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues, searchFingerIssues } from './searchClearance';
@@ -1165,15 +1165,24 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 			refusal(error);
 		}
 	};
-	// The measures first, which are at hand; then the tips and the necks. The thinnest neck is no narrower at
-	// all where it would be under PAPER_NECK_MM: paper that may tear is not made to tear sooner for a shorter cut.
+	// The measures first, which are at hand; then each fault by itself (the measures add needles to weak places, and
+	// a needle less must not pay for a weak place more), the template shared to the millimetre, and the necks. The
+	// thinnest neck is no narrower at all where it would be under PAPER_NECK_MM: paper that may tear is not made to
+	// tear sooner for a shorter cut.
 	const thinnest = new WeakMap<HeartDesign, number>(), neck = (design: HeartDesign) => {
 		if (!thinnest.has(design)) thinnest.set(design, thinnestNeck(design));
 		return thinnest.get(design)!;
 	};
+	const faulty = new WeakMap<HeartDesign, number[]>(), faults = (design: HeartDesign) => {
+		if (!faulty.has(design)) {
+			const paper = paperFaults(design);
+			faulty.set(design, [paper.weak, paper.loose, ...cutTipCounts(design), Number(!lobesShareTemplate(design.fingers, design.gridSize))]);
+		}
+		return faulty.get(design)!;
+	};
 	const noWorse = (a: Drawn, b: Drawn) => a.m[0] <= b.m[0] && a.m[1] <= b.m[1] && a.m[2] <= b.m[2] && a.m[3] <= b.m[3] && a.m[4] < b.m[4]
-		&& cutTipCounts(a.heart.design)[0] <= cutTipCounts(b.heart.design)[0] && neckAsWide(a.heart.design, b.heart.design)
-		&& neck(a.heart.design) >= Math.min(neck(b.heart.design), PAPER_NECK_MM) - 1e-9;
+		&& (!a.heart.hardToCut || !!b.heart.hardToCut) && faults(a.heart.design).every((count, k) => count <= faults(b.heart.design)[k])
+		&& neckAsWide(a.heart.design, b.heart.design) && neck(a.heart.design) >= Math.min(neck(b.heart.design), PAPER_NECK_MM) - 1e-9;
 	const at = (p: Point) => `${p[0].toFixed(6)},${p[1].toFixed(6)}`, apart = (p: Point, q: Point) => Math.hypot(p[0] - q[0], p[1] - q[1]);
 	const onAxis = (p: Point) => Math.abs(p[0] - p[1]) < MIRROR_NEAR, flip = (p: Point): Point => [p[1], p[0]];
 	// What a cut's end costs where a paper's line turns back on itself into it: the edges at `p`, the cut leaving towards `to`.
