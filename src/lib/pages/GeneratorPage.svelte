@@ -10,7 +10,7 @@
 		type CatalogItem,
 		type MotifGroup
 	} from '$lib/generator/catalog';
-	import { findIcons, iconCredit, iconSetUrl } from '$lib/generator/iconSearch';
+	import { findIcons, iconCredit, iconItem, iconSetUrl } from '$lib/generator/iconSearch';
 	import { isIconId } from '$lib/generator/iconId';
 	import {
 		DEFAULT_COLORS,
@@ -356,6 +356,33 @@
 	const label = (item: CatalogItem) => motifLabel(item, lang);
 	let matches = $derived(matchingMotifs(catalog, query));
 	let groups = $derived(motifGroups(catalog));
+	/**
+	 * The chosen figure where the lists before a search do not hold it: one a
+	 * link chose, or one found by a search since cleared. It leads the list, so
+	 * the visitor sees what the heart is made of and that it is the one chosen.
+	 */
+	let linked = $state<CatalogItem | null>(null);
+	let chosen = $derived.by(() => {
+		if (groups.some(({ items }) => items.some((item) => item.id === config.motif))) return null;
+		return catalog.find((item) => item.id === config.motif) ?? (linked?.id === config.motif ? linked : null);
+	});
+	$effect(() => {
+		const id = config.motif;
+		if (config.mode !== 'figure' || !isIconId(id) || linked?.id === id) return;
+		let live = true;
+		// A figure just found by a search is already drawn; any other is fetched.
+		const known = found.find((item) => item.id === id);
+		if (known) linked = known;
+		else
+			iconItem(id)
+				.then((item) => {
+					if (live) linked = item;
+				})
+				.catch(() => {});
+		return () => {
+			live = false;
+		};
+	});
 	let fontMatches = $derived(googleIndex ? matchingFamilies(googleIndex, fontQuery) : []);
 	/** A family found in the search chooses our own copy of the fonts we ship. */
 	const familyChoice = (family: GoogleFamily) => SHIPPED[family[0]] ?? googleFontChoice(family);
@@ -903,7 +930,9 @@
 						{:else if finding}<p class="search-hint">
 								{t('generatorOpenSetsSearching', lang)}
 							</p>{/if}
-					{:else}{#each groups as { group, items } (group)}<h2 class="motif-heading">
+					{:else}{#if chosen}<h2 class="motif-heading">{t('generatorChosen', lang)}</h2>
+							<div class="motifs">{@render motifButton(chosen)}</div>{/if}
+						{#each groups as { group, items } (group)}<h2 class="motif-heading">
 								{t(GROUP_TITLES[group], lang)}
 							</h2>
 							<div class="motifs">

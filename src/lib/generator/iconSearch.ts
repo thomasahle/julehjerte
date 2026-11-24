@@ -141,3 +141,12 @@ export async function iconContours(id: string, fetcher: Fetch = fetch): Promise<
 	outlines.set(id, contours);
 	return contours;
 }
+
+/**
+ * An icon of the open sets as the picker shows it: for the figure a link chose,
+ * which no list on the page holds until it is searched for. Its contours are the
+ * ones the heart is made of (`iconContours`), fetched once for both.
+ */
+export async function iconItem(id: string, fetcher: Fetch = fetch): Promise<CatalogItem> {
+	return { id, name: title(id.split(':')[1] ?? id), art: contourArt(await iconContours(id, fetcher)), box: 100 };
+}
