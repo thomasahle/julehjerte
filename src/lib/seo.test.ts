@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import heartMeta from '$lib/data/heart-meta.json';
 import { ALL_HEART_IDS } from '$lib/data/categories';
 import { heartDescription } from '$lib/data/heartDescriptions';
-import { META_DESCRIPTION_MAX, heartMetaDescription } from './seo';
+import { META_DESCRIPTION_MAX, heartMetaDescription, siteMetaDescription } from './seo';
 import { t, type Language } from '$lib/i18n';
 
 type Meta = { name: string; gridSize: { x: number; y: number } };
@@ -82,5 +82,11 @@ describe('heartMetaDescription', () => {
 		expect(heartMetaDescription({ ...heart, name: 'x'.repeat(300) }, null, 'da').length).toBeLessThanOrEqual(
 			META_DESCRIPTION_MAX
 		);
+	});
+});
+
+describe('the front page description', () => {
+	it('fits what a search result shows', () => {
+		for (const lang of ['da', 'en'] as const) expect(siteMetaDescription(lang).length).toBeLessThanOrEqual(META_DESCRIPTION_MAX);
 	});
 });
