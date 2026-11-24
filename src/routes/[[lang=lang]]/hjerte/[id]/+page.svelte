@@ -37,6 +37,7 @@
     SITE_NAME,
     SITE_URL,
   } from "$lib/config";
+  import { templatePdfPath } from "$lib/templatePdf";
   import { ROBOTS_INDEX, heartBreadcrumbJsonLd, heartHowToJsonLd, heartMetaDescription, heartPageTitle, heartWebPageJsonLd, jsonLdScript, siteMetaDescription, socialImage } from "$lib/seo";
   import { langFromParam, stripsLabel as formatStrips, t } from "$lib/i18n";
   import { slugify } from "$lib/utils/slug";
@@ -410,6 +411,10 @@
   <link rel="alternate" hreflang="da" href={canonicalDa} />
   <link rel="alternate" hreflang="en" href={canonicalEn} />
   <link rel="alternate" hreflang="x-default" href={canonicalDa} />
+  {#if isGalleryPage && templatePdfPath(heartId)}
+    <!-- The template as a file with an address of its own, for search engines and AI assistants. -->
+    <link rel="alternate" type="application/pdf" href="{SITE_URL}{templatePdfPath(heartId)}" title="PDF, A4, 80 mm" />
+  {/if}
   <meta property="og:type" content="article" />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:title" content={pageTitle} />

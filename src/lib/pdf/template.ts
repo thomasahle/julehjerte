@@ -251,6 +251,12 @@ export interface TemplatesPDFOptions {
   previewImage?: boolean;
   /** The file name's stem for a single heart, in place of its id (`templatesFilename`). */
   fileStem?: string;
+  /**
+   * The hearts' pictures, PNG data URLs by design id, already drawn. The build
+   * passes them for the PDFs it writes ahead (src/routes/skabelon), where
+   * there is no browser to draw them in.
+   */
+  images?: Map<string, string>;
 }
 
 /** jsPDF's own names for the two standard sheets, so a printer sees "A4", not 210 × 297 mm. */
@@ -285,9 +291,9 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
   // One picture per design, rendered for the largest template it appears in;
   // the dialog's preview asks for the same rendering.
   const picture = options.previewImage ?? true;
-  const heartImages = picture
-    ? await prerenderHeartImages(designs, templatePicturePixels(pieces, lang))
-    : new Map<string, string>();
+  const heartImages = !picture
+    ? new Map<string, string>()
+    : (options.images ?? (await prerenderHeartImages(designs, templatePicturePixels(pieces, lang))));
   // jsPDF's own widths for its Helvetica, in mm, so the address is shrunk
   // only if it really would not fit the ear.
   const measure = (text: string, sizePt: number) =>

@@ -15,6 +15,15 @@
 - [How to](https://juleflet.dk/en/how-to/): cutting and weaving, step by step
 - [About](https://juleflet.dk/en/about/): the history of the craft and of the site
 
+## Template files
+
+A few templates are also plain PDF files (A4, the heart 80 mm wide), each linked from its heart's page; every other heart's PDF is made by the "Hent skabelon" button on its page.
+
+- [Klassisk 3×3](https://juleflet.dk/skabelon/classic-3x3.pdf)
+- [Stjerne](https://juleflet.dk/skabelon/stjerne.pdf)
+- [JUL](https://juleflet.dk/skabelon/jul.pdf)
+- [Nemt hjerte](https://juleflet.dk/skabelon/nemt-hjerte.pdf)
+
 ## Source
 
 - [GitHub](https://github.com/thomasahle/julehjerte): the site's code, MIT licence

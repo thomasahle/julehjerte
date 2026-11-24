@@ -3,6 +3,7 @@ import { ALL_HEART_IDS } from '$lib/data/categories';
 import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
 import { FRONT_PAGE_IMAGE, heartImageUrl } from '$lib/seo';
 import { readLastModified } from '$lib/server/lastModified';
+import { TEMPLATE_PDF_HEARTS, templatePdfPath } from '$lib/templatePdf';
 import type { RequestHandler } from './$types';
 
 export const prerender = true;
@@ -64,6 +65,15 @@ ${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ''}    <priority>${priority}
 ${images.map((image) => `    <image:image>\n      <image:loc>${image}</image:loc>\n    </image:image>\n`).join('')}  </url>`
 		);
 	});
+
+	// The templates that are also PDF files (a trial, $lib/templatePdf), dated as their heart.
+	for (const id of TEMPLATE_PDF_HEARTS) {
+		const lastmod = dates?.hearts.get(id) ?? null;
+		urls.push(`  <url>
+    <loc>${SITE_URL}${templatePdfPath(id)}</loc>
+${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ''}    <priority>0.4</priority>
+  </url>`);
+	}
 
 	const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
