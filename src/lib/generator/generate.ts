@@ -1156,11 +1156,16 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 	const shown = picture(spurless(request), knownOf(heart, request.scale ?? .7));
 	if (!shown?.rings.length) return heart;
 	type Drawn = { heart: GeneratorResult; m: number[]; edges: Edge[] };
+	const torn = new WeakMap<HeartDesign, ReturnType<typeof paperFaults>>(), paper = (design: HeartDesign) => {
+		if (!torn.has(design)) torn.set(design, paperFaults(design));
+		return torn.get(design)!;
+	};
 	const draw = (edges: Edge[]): Drawn | undefined => {
 		try {
-			const unbent: GeneratorResult = { ...heart, ...finishConstruction(request, { ...construction, edges, geometry: compile(edges) }, heart.recipe) };
+			// The outline's runs between the cuts' ends are mostly those already fitted: the heart's own fits serve.
+			const unbent: GeneratorResult = { ...heart, ...finishConstruction(request, { ...construction, edges, geometry: compile(edges) }, heart.recipe, undefined, sharedFits) };
 			const bent = improveSharedConnections(unbent, { keepTemplate: true });
-			return { heart: bent, m: cutMeasures(bent.design, shown.rings), edges };
+			return { heart: bent, m: cutMeasures(bent.design, shown.rings, paper(bent.design)), edges };
 		} catch (error) {
 			refusal(error);
 		}
@@ -1174,10 +1179,8 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 		return thinnest.get(design)!;
 	};
 	const faulty = new WeakMap<HeartDesign, number[]>(), faults = (design: HeartDesign) => {
-		if (!faulty.has(design)) {
-			const paper = paperFaults(design);
-			faulty.set(design, [paper.weak, paper.loose, ...cutTipCounts(design), Number(!lobesShareTemplate(design.fingers, design.gridSize))]);
-		}
+		if (!faulty.has(design))
+			faulty.set(design, [paper(design).weak, paper(design).loose, ...cutTipCounts(design), Number(!lobesShareTemplate(design.fingers, design.gridSize))]);
 		return faulty.get(design)!;
 	};
 	const noWorse = (a: Drawn, b: Drawn) => a.m[0] <= b.m[0] && a.m[1] <= b.m[1] && a.m[2] <= b.m[2] && a.m[3] <= b.m[3] && a.m[4] < b.m[4]
@@ -1287,7 +1290,7 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 		const both = redrawn(made.edges, partner, mirrored);
 		return both && { edges: both.edges, cuts: [cutName(points), cutName(partner)] };
 	};
-	let best: Drawn = { heart, m: cutMeasures(heart.design, shown.rings), edges: construction.edges }, draws = 0, fails = 0;
+	let best: Drawn = { heart, m: cutMeasures(heart.design, shown.rings, paper(heart.design)), edges: construction.edges }, draws = 0, fails = 0;
 	let cuts = cutsOf(best.edges);
 	const ranked = (plain = false) => cuts.map(cut => ({ cut, way: wayOf(best.edges, cut, plain) }))
 		.filter((x): x is { cut: Cut; way: Option } => !!x.way).sort((x, y) => y.way.gain - x.way.gain);

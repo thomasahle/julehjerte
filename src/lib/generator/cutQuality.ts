@@ -1,6 +1,6 @@
 import type { CutGeometry } from '$lib/inverse/toHeartDesign';
 import type { Finger, HeartDesign, LobeId, Vec } from '$lib/types/heart';
-import { PRINT_WIDTH_MM, paperFaults } from '$lib/geometry/paperNecks';
+import { PRINT_WIDTH_MM, paperFaults, type PaperFaults } from '$lib/geometry/paperNecks';
 import { lobesDrawnAlike } from '$lib/utils/symmetry';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import type { Edge, Point, Ring } from './geometry';
@@ -68,19 +68,18 @@ export function fewerCutTips(a: [number, number], b: [number, number]): boolean 
  * own (1) rather than sharing one (0, see `lobesDrawnAlike`), its sharp
  * tips, its turns of more than 25° along hidden cuts (where its picture, the
  * even–odd `rings` in the sheet's 100 units, has one colour on both sides),
- * and the length of all its cuts in those units. */
-export function cutMeasures(design: HeartDesign, rings: Ring[]): [number, number, number, number, number] {
+ * and the length of all its cuts in those units. `paper` is its paper's
+ * faults where the caller has them at hand. */
+export function cutMeasures(design: HeartDesign, rings: Ring[], paper: PaperFaults = paperFaults(design)): [number, number, number, number, number] {
 	const rect = inferOverlapRect(design.fingers, design.gridSize);
 	const unit = (x: number, y: number): Point => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
-	const inside = (x: number, y: number, ring: Ring) => {
-		let c = false;
-		for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-			const [xi, yi] = ring[i], [xj, yj] = ring[j];
-			if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
-		}
+	const colour = (x: number, y: number) => {
+		let c = 0;
+		for (const [xi, yi, xj, yj] of sides[Math.max(0, Math.min(ROWS - 1, Math.floor(y / 100 * ROWS)))])
+			if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c ^= 1;
 		return c;
 	};
-	const colour = (x: number, y: number) => rings.reduce((v, ring) => v ^ Number(inside(x, y, ring)), 0);
+	const sides = sidesByRow(rings);
 	let length = 0, turns = 0;
 	for (const finger of design.fingers) {
 		if (!finger.id.includes('-cut-')) continue;
@@ -115,7 +114,27 @@ export function cutMeasures(design: HeartDesign, rings: Ring[]): [number, number
 	const shared = lobesDrawnAlike(design.fingers, design.gridSize);
 	const onMiddle = (p: Vec) => { const [x, y] = unit(p.x, p.y); return Math.abs(x - y) < MIDDLE_NEEDLE; };
 	const [needles, sharp] = cutTipCounts(design, shared ? onMiddle : undefined);
-	return [paperFaults(design).weak + needles, shared ? 0 : 1, sharp, turns, Math.round(length)];
+	return [paper.weak + needles, shared ? 0 : 1, sharp, turns, Math.round(length)];
+}
+
+/** The rows the picture's sides are sorted into (see `sidesByRow`). */
+const ROWS = 64;
+const rowsOf = new WeakMap<Ring[], [number, number, number, number][][]>();
+/** The sides of a picture's rings by the rows of the sheet they pass through (ROWS of them over its 100 units, the
+ * first and last taking what lies beyond): whether a point is coloured is the parity of the sides of its row that
+ * a ray from it crosses, the same sides and the same test as going round every ring. */
+function sidesByRow(rings: Ring[]): [number, number, number, number][][] {
+	let rows = rowsOf.get(rings);
+	if (!rows) {
+		rows = Array.from({ length: ROWS }, () => []);
+		const row = (y: number) => Math.max(0, Math.min(ROWS - 1, Math.floor(y / 100 * ROWS)));
+		for (const ring of rings) for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+			const [xi, yi] = ring[i], [xj, yj] = ring[j];
+			for (let k = row(Math.min(yi, yj)); k <= row(Math.max(yi, yj)); k++) rows[k].push([xi, yi, xj, yj]);
+		}
+		rowsOf.set(rings, rows);
+	}
+	return rows;
 }
 
 /** How near the heart's middle, in the sheet's 100 units, a needle lies that

@@ -15,16 +15,20 @@ const key = (p: Point) => `${p[0].toFixed(6)},${p[1].toFixed(6)}`;
 const same = (p: Point, q: Point) => key(p) === key(q);
 const length = (e: Edge) => Math.hypot(e.to[0] - e.from[0], e.to[1] - e.from[1]);
 
-/** The edges at each point. */
+/** The edges at each point: found once for a list of edges, which no move here changes (each returns a new list). */
+const incident = new WeakMap<Edge[], Map<string, number[]>>();
 function incidence(edges: Edge[]): Map<string, number[]> {
-	const at = new Map<string, number[]>();
+	let at = incident.get(edges);
+	if (at) return at;
+	at = new Map<string, number[]>();
 	edges.forEach((e, i) => {
 		for (const p of [e.from, e.to]) {
 			const k = key(p);
-			if (!at.has(k)) at.set(k, []);
-			at.get(k)!.push(i);
+			if (!at!.has(k)) at!.set(k, []);
+			at!.get(k)!.push(i);
 		}
 	});
+	incident.set(edges, at);
 	return at;
 }
 
