@@ -391,8 +391,8 @@ hidden cuts 5434 → 4405); on three, seven and nine strips 44 of 98, 66 of 147
 and 49 of 98 (on nine strips at 90%, needles 265 → 89); with 9% of air 51 of
 98. At 50, 70 and 90%: Stråler 30 of 147, Kiler 27, Tæt om figuren 23,
 Strålekrans 71, Cirkel med dobbelt bort 64, Tern i spidserne 61 (weak places
-96 → 80), Små motiver 27, Figur i ternene 6. No heart of the 2107 has a fault
-more, a narrower neck under 2 mm, a template more or is newly refused. Of the
+96 → 80), Små motiver 27, Figur i ternene 6. No heart of these 1960 has a
+fault more, a narrower neck under 2 mm, a template more or is newly refused. Of the
 identity hearts 206 of 711 figures changed, none worse; their pictures differ
 by single cells along the outlines (at most 28 of the 25 600), where a cut's
 end is rounded into the outline at another place. A heart takes 0.03–0.1 s
