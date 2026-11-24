@@ -359,6 +359,45 @@ the best kept (`fromSolve`): `topology.mjs` lists it there only where it beats
 the generator's heart, so any that beats it does too. In the rays the
 wreath's own heart takes 13–30 s past 54%, its solve a fifth of a second.
 
+## Hidden cuts drawn short, in every figure frame
+
+A finished figure heart's hidden cuts are drawn anew, whatever made them
+(`shortened` in generate.ts, the last step of `generate`; a heart that is hard
+to cut is left alone). A hidden cut that leaves the middle of a square's arc
+and bends on its way makes the paper whose line came along the arc turn back
+on itself into the cut. So each hidden cut of the construction (`sharedCuts`)
+is drawn straight (`redrawShared`), and each of its ends may move: to the next
+corner of that paper's line (`slideToCorner`, where the line then runs
+straight on into the cut; the board's circle and grid lines count as lines
+there), or, on the motif, to the point nearest the cut's other end
+(`slideNearest`). An end on the heart's middle line stays, and where the lobes
+share a template a cut is drawn only together with its mirror image, the
+mirrored way. Each cut's ways are ranked by their length, `BEND_COST` a bend
+and a penalty where a line and the cut make less than `HAIRPIN` degrees, and
+checked by the builder's cheap checks before a heart is drawn. Tried: every
+cut's best way at once; every cut's best way that moves no end on the motif;
+then one cut at a time, the most gained first, up to `SHORTEN_DRAWS` hearts or
+`SHORTEN_FAILS` not kept. A heart is kept only where no measure of
+`cutMeasures` is worse and its cuts are shorter, no fault by itself grows
+(weak places, loose paper, needles, sharp tips), it is not hard to cut where
+the other was not, its lobes still share a template to the millimetre where
+they did, no neck is narrower by `neckAsWide`, and its thinnest neck is no
+narrower at all where that is under 2 mm.
+
+Measured on the 49 featured motifs (2026-11-24, against the hearts before):
+Cirkel · Lige store tern on five strips at seven sizes from 50 to 100%, 171 of
+343 hearts changed (weak places 218 → 202, sharp tips 105 → 96, turns along
+hidden cuts 5434 → 4405); on three, seven and nine strips 44 of 98, 66 of 147
+and 49 of 98 (on nine strips at 90%, needles 265 → 89); with 9% of air 51 of
+98. At 50, 70 and 90%: Stråler 30 of 147, Kiler 27, Tæt om figuren 23,
+Strålekrans 71, Cirkel med dobbelt bort 64, Tern i spidserne 61 (weak places
+96 → 80), Små motiver 27, Figur i ternene 6. No heart of the 2107 has a fault
+more, a narrower neck under 2 mm, a template more or is newly refused. Of the
+identity hearts 206 of 711 figures changed, none worse; their pictures differ
+by single cells along the outlines (at most 28 of the 25 600), where a cut's
+end is rounded into the outline at another place. A heart takes 0.03–0.1 s
+longer in most frames, about 0.3 s in Små motiver and on the board.
+
 ## One recipe for each pair, on every board
 
 On the board circle a picture is of two topologies: the outer one, the
