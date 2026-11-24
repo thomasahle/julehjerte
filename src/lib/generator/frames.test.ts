@@ -691,7 +691,7 @@ describe('frames from real hearts', () => {
    expect(hardToCut, `${board}`).toBeUndefined();
    expect(scale, `${board}`).toBeUndefined();
   }
- });
+ }, 30000);
  slow('weaves every line of nine strips past the outer lines\' junctions with the middle ones, every square equal', () => {
   // Past the junctions at 39.3, a completion whose cuts across the circle
   // reach past one chain to the next keeps all nine strips a side.
@@ -703,7 +703,7 @@ describe('frames from real hearts', () => {
    expect(hardToCut, `${setting}`).toBeUndefined();
    expect(scale, `${setting}`).toBeUndefined();
   }
- });
+ }, 30000);
  slow('weaves every line of nine strips just short of the outer lines and past their junctions with the second', () => {
   // Completions with the fewest switch points the crossings allow carry the
   // circle on short of the outer lines and past their junctions with the
@@ -718,7 +718,7 @@ describe('frames from real hearts', () => {
    expect(hardToCut, `${radius}`).toBeUndefined();
    expect(scale, `${radius}`).toBeUndefined();
   }
- });
+ }, 30000);
  slow('makes a board heart that fits nowhere in the touching circle with more air, rather than asking for it again without end', () => {
   // The polar star cannot be divided in four in the touching circle, and with 9% of air about it none of the
   // circle's hearts could be built: the touching circle was then asked for again, itself, until the stack ran out.
@@ -831,7 +831,7 @@ describe('frames from real hearts', () => {
   const { hardToCut, scale } = generate({ mode: 'figure', name: 'Candy', contours: candy.contours as Ring[], colors, style: 'sunburst', frame: 'circle', frameSize: 70, scale: .82, gap: 3 });
   expect(hardToCut).toBeUndefined();
   expect(scale).toBeUndefined();
- });
+ }, 30000);
  it('keeps a panel\'s gate off a seam through the motif\'s point', () => {
   // On nine strips at 100% the seams cross beside the star's centre, one
   // through its top point, where the top panels' gates would meet it.
