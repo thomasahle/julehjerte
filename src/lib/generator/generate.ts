@@ -4004,7 +4004,9 @@ function boardRecipes(request: GeneratorRequest, { finish, onRejected, curveFitt
 	try {
 		const at = ranges.indexOf(mode);
 		if (at > 1) return smaller(boardSteps(strips)[at - 2][1] / 100);
-		if (mode === large && (gap > 3 || whole)) return smaller(.7);
+		// Not from the touching circle itself: that asked for the same heart again, without end (the santa hat
+		// at 70% with 9% of air never came). It is left to the ways that follow, as any heart not built here.
+		if (mode === large && range !== small && (gap > 3 || whole)) return smaller(.7);
 	} catch (error) {
 		if (!isRefusal(error) || strips === 5) throw error;
 		last = error;

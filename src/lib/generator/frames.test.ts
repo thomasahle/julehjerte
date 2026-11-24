@@ -719,6 +719,12 @@ describe('frames from real hearts', () => {
    expect(scale, `${radius}`).toBeUndefined();
   }
  });
+ slow('makes a board heart that fits nowhere in the touching circle with more air, rather than asking for it again without end', () => {
+  // The polar star cannot be divided in four in the touching circle, and with 9% of air about it none of the
+  // circle's hearts could be built: the touching circle was then asked for again, itself, until the stack ran out.
+  const { design } = generate({ mode: 'figure', name: 'Polar star', contours: polarStar.contours as Ring[], colors, style: 'board', scale: .7, gap: 9 });
+  expect(design.gridSize).toEqual({ x: 5, y: 5 });
+ }, 60000);
  slow('reaches past the paper\'s edges on finer boards, leaving out the middle lines it covers', () => {
   // Once the circle covers the middle lines from edge to edge they show
   // nothing: the heart leaves them out, and the circle reaches past the
