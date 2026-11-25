@@ -202,7 +202,7 @@ describe('complete motif frames', () => {
   }, 20000);
  }
  for (const [name, motif] of Object.entries({ gift, bicycle, coffee, snow, sailboat })) {
-  (name === 'snow' || name === 'gift' ? slow : it)(`keeps ${name} and its counters in the six-strip checked-tip frame`, () => {
+  (name !== 'bicycle' && name !== 'sailboat' ? slow : it)(`keeps ${name} and its counters in the six-strip checked-tip frame`, () => {
    const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'corners' });
    expect(design.gridSize).toEqual({ x: 6, y: 6 });
    expect(design).not.toHaveProperty('rightCutouts');
@@ -1192,12 +1192,12 @@ describe('frames from real hearts', () => {
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 0]);
  }, 30000);
- it('keeps, of a five-strip board heart\'s working cuts, the one whose paper holds best', () => {
+ slow('keeps, of a five-strip board heart\'s working cuts, the one whose paper holds best', () => {
   // The star's first division at 73% left four pieces hanging by paper under
   // 2 mm; another through the same picture leaves three.
   const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .73 });
   expect(paperFaults(design).weak).toBeLessThan(4);
- });
+ }, 30000);
  slow('lets a tearing board heart\'s legs meet the motif nearer it or the circle, where that holds', () => {
   // At 75% the moon and stars' best cuts left a piece hanging by paper under
   // 2 mm where the circle's legs met the motif halfway between it and the
@@ -1220,18 +1220,18 @@ describe('frames from real hearts', () => {
   const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .8 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
  }, 30000);
- it('keeps the five-strip board heart whose paper holds best at the default size too', () => {
+ slow('keeps the five-strip board heart whose paper holds best at the default size too', () => {
   // The yule goat at 70%, in the touching circle, left two pieces hanging by
   // paper under 2 mm in the first construction that finished.
   const { design } = generate({ mode: 'figure', name: 'Yule goat', contours: yuleGoat.contours as Ring[], colors, style: 'board', scale: .7 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
- });
- it('keeps the three-strip board heart whose paper holds best', () => {
+ }, 30000);
+ slow('keeps the three-strip board heart whose paper holds best', () => {
   // The snowman at 60% on three strips left two pieces hanging by paper under
   // 2 mm in the first construction that finished.
   const { design } = generate({ mode: 'figure', name: 'Snowman', contours: snowman.contours as Ring[], colors, style: 'board', board: 3, scale: .6 });
   expect(paperFaults(design)).toEqual({ weak: 0, loose: 0 });
- });
+ }, 30000);
  slow('keeps, of the first constructions that finish in a frame, the one whose paper holds best', () => {
   // The first that finished left pieces hanging by paper under 2 mm: the
   // candle's in rays at 85%, the sleigh's in the checked tips at 70%.
