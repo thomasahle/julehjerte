@@ -89,7 +89,7 @@ describe('HeartCard', () => {
 			expect(links()).toHaveLength(1);
 			const [link] = links();
 			expect(link.getAttribute('href')).toBe(heartHref(heart.id, lang));
-			expect(link.getAttribute('aria-label')).toBe(heart.name);
+			expect(link.textContent).toBe(heart.name);
 		}
 	);
 

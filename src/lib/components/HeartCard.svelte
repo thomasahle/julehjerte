@@ -149,8 +149,6 @@
 	style:--strand={strand === undefined ? undefined : `var(--strand-${strand})`}
 	style:display={hidden ? 'none' : undefined}
 >
-	<a class="card-link" {href} onclick={handleOpen} aria-label={heart.name}></a>
-
 	<div class="card-heart">
 		<HangingHeart
 			{design}
@@ -190,7 +188,7 @@
 	</div>
 
 	<div class="card-meta">
-		<span class="name" id={nameId}>{heart.name}</span>
+		<a class="name" id={nameId} {href} onclick={handleOpen}>{heart.name}</a>
 		<DifficultyDots level={heart.difficulty} {lang} />
 	</div>
 
@@ -233,13 +231,26 @@
 		transform: scale(1.02);
 	}
 
-	/* The whole card opens the heart's page. */
-	.card-link {
+	/* The whole card opens the heart's page: the name is the link, and its ::after covers the card. The
+	   link has its text inside it, so a reader that keeps only a page's text and links still gets it. */
+	.name::after {
+		content: '';
 		position: absolute;
 		inset: 0;
 		z-index: 1;
 		border-radius: 14px;
-		background: transparent;
+	}
+
+	/* Keyboard focus rings the card, as it did, not the name alone. */
+	.name:focus-visible {
+		outline: none;
+		box-shadow: none;
+	}
+
+	.name:focus-visible::after {
+		outline: 3px solid var(--blue);
+		outline-offset: 2px;
+		box-shadow: 0 0 0 2px var(--page);
 	}
 
 	/* The visitor's own photo of the heart, over the drawing: a print with a white
@@ -405,6 +416,7 @@
 		font-size: 16px;
 		font-weight: 600;
 		color: var(--ink);
+		text-decoration: none;
 		overflow-wrap: anywhere;
 	}
 
