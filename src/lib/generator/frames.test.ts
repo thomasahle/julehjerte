@@ -1030,10 +1030,11 @@ describe('frames from real hearts', () => {
   expect(build(false)).toThrow(ConstructionError);
   expect(build(true)().edges.length).toBeGreaterThan(0);
  }, 60000);
- slow('builds the swan in the open frames, where they refused it', () => {
-  for (const style of ['fitted', 'wedges'] as const)
-   expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length, style).toBeGreaterThan(0);
- }, 120000);
+ // Each frame's swan in a test of its own: together they took 106 s of the 120 a slow test here is given, and 130 beside another worker.
+ for (const style of ['fitted', 'wedges'] as const)
+  slow(`builds the swan in the open frames, where they refused it: ${style}`, () => {
+   expect(generate({ mode: 'figure', name: 'Swan', contours: swan.contours as Ring[], colors, style, frame: 'circle', frameSize: 70, scale: .7, gap: 3 }).design.fingers.length).toBeGreaterThan(0);
+  }, 120000);
  slow('builds the note and pencil in the open frames, a gate reached round the chevron', () => {
   // The chevron walls the pencil, the base, off from a gate beside it, and
   // the corners inside the gates give that gate's spoke no way: it goes
