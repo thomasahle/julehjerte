@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { linkOf } from './fixtures/link';
 import { slow } from './slow.test-helpers';
 import { generate, fillSquare, fitCircle } from './generate';
-import { cutTipCounts } from './cutQuality';
+import { cutHooks, cutTipCounts } from './cutQuality';
 import { generateFittedFigure, mirrorMean, mirrorSymmetric } from './fitted';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
@@ -20,13 +20,15 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { intersectionMarginPx } from '$lib/editor/curveIssues';
 import { findSearchIssues } from './searchClearance';
 import { gridClearanceScale } from '$lib/geometry/clearance';
-import { paperFaults } from '$lib/geometry/paperNecks';
+import { paperFaults, thinnestNeck } from '$lib/geometry/paperNecks';
 import tree from '../../../static/generator/motifs/tree.json';
 import deer from '../../../static/generator/motifs/pin-reindeer.json';
 import horse from '../../../static/generator/motifs/ph-horse.json';
 import diamond from '../../../static/generator/motifs/diamond.json';
 import bird from '../../../static/generator/motifs/ph-bird.json';
 import star from '../../../static/generator/motifs/star.json';
+import moon from '../../../static/generator/motifs/moon.json';
+import pig from '../../../static/generator/motifs/hi-pig.json';
 import yuleGoat from '../../../static/generator/motifs/yule-goat.json';
 import snowman from '../../../static/generator/motifs/mc-snowman.json';
 import candle from '../../../static/generator/motifs/ms-candle.json';
@@ -817,6 +819,29 @@ describe('frames from real hearts', () => {
   expect(hardToCut).toBeUndefined();
   expect(cutTipCounts(design)).toEqual([0, 1]);
  });
+ slow('goes on one cut at a time after putting the hidden cuts on corners at once', () => {
+  // The star on Cirkel · Lige store tern at 88% with 9% of air: the round that put the cuts to the edge squares
+  // on their corners was kept, and the pass ended there; the two cuts across the star's lower arms stayed
+  // slanted, each hooked where it met the arm's side at 35°. Tried after it, each is put square to that side.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style: 'board', scale: .88, gap: 9 });
+  expect(hardToCut).toBeUndefined();
+  expect(cutHooks(design)).toBe(0);
+ }, 30000);
+ slow('hooks no end of a hidden cut more by what it tries after a kept round', () => {
+  // The moon on three strips at 90%: after the round that was kept, the cut from the circle's corner to the
+  // moon's inner curve had its end slid along the curve, 10 units shorter, and then left the corner at a slant,
+  // bent into a hook there. It stays straight.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Moon', contours: moon.contours as Ring[], colors, style: 'board', board: 3, scale: .9, gap: 3 });
+  expect(hardToCut).toBeUndefined();
+  expect(cutHooks(design)).toBe(0);
+ }, 30000);
+ slow('thins neither template\'s narrowest neck under 2 mm for shorter hidden cuts', () => {
+  // The pig in Tern i spidserne at 50%: its thinnest neck of 1.5 mm, on one template, was kept, while the
+  // other template's went from 2.8 mm to 1.9 for cuts 3 units shorter.
+  const { design, hardToCut } = generate({ mode: 'figure', name: 'Pig', contours: pig.contours as Ring[], colors, style: 'corners', frame: 'circle', frameSize: 70, scale: .5, gap: 3 });
+  expect(hardToCut).toBeUndefined();
+  expect(Math.max(...(['left', 'right'] as const).map(lobe => thinnestNeck(design, { lobes: [lobe] })))).toBeGreaterThan(2.5);
+ }, 30000);
  slow('keeps the space around a sunburst\'s motif a little smaller, rather than drawing it at four fifths of the size it says', () => {
   // At 90% no heart keeping the space around the cat can be finished. Without
   // it the circle keeps the frame's own size and the motif fills it, at four

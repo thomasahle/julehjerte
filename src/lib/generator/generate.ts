@@ -21,7 +21,7 @@ export { fillSquare, fitCircle } from './frameFit';
 import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { CORNER_INSETS, generateCheckeredGrid, checkeredGridCache, checkeredLayouts, printCornerInsets } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
-import { betterCuts, cutMeasures, cutTipCounts, cutTipPoints, fewerCutTips, middleNeedleBases, middleNeedles } from './cutQuality';
+import { betterCuts, cutHooks, cutMeasures, cutTipCounts, cutTipPoints, fewerCutTips, middleNeedleBases, middleNeedles } from './cutQuality';
 import { trickyLetters } from './trickyLetters';
 import { normalizeContours, closedAtContacts, withoutSpurs } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
@@ -1144,17 +1144,24 @@ const SHORTEN_CLEAR = 1.2, SHORTEN_CLEAR_ENDS = 2.5;
  * runs straight on. An end on the heart's middle line stays there, and
  * where the lobes share a template a cut is drawn anew only with its mirror
  * image, the mirrored way (the lobes could not share it else). Every cut's
- * best such drawing is tried at once; where that heart cuts worse or cannot
- * be built, one cut at a time, the most gained first, up to SHORTEN_DRAWS
- * hearts drawn or SHORTEN_FAILS of them not kept. A heart is kept only where no paper tears
- * that held, no neck is narrower, it needs no second template, has no more
- * tips or turns, and its cuts are shorter.
+ * best such drawing is tried at once; then, on that heart where it is kept
+ * and on the first where it cuts worse or cannot be built, one cut at a
+ * time, the most gained first, up to SHORTEN_DRAWS hearts drawn or
+ * SHORTEN_FAILS of them not kept (the star's cuts across its lower arms on
+ * the board at 88%: left slanted by the round that put the others on
+ * corners, each hooked where it met the arm's side at 35°, then put square
+ * to it; what is tried after a kept round may hook no end more, see
+ * `cutHooks`, nor narrow the thinnest neck). A heart is kept only where no paper tears that held, no neck
+ * is narrower (nor either lobe's thinnest under 2 mm, unless the heart's
+ * thinnest gets wider), it needs no second template, has no more tips or
+ * turns, and its cuts are shorter.
  */
 function shortened(request: GeneratorRequest, heart: GeneratorResult): GeneratorResult {
 	const construction = constructionOf(heart.design);
 	if (request.mode !== 'figure' || !construction || heart.hardToCut) return heart;
 	const shown = picture(spurless(request), knownOf(heart, request.scale ?? .7));
 	if (!shown?.rings.length) return heart;
+	const rings = shown.rings;
 	type Drawn = { heart: GeneratorResult; m: number[]; edges: Edge[] };
 	const torn = new WeakMap<HeartDesign, ReturnType<typeof paperFaults>>(), paper = (design: HeartDesign) => {
 		if (!torn.has(design)) torn.set(design, paperFaults(design));
@@ -1165,7 +1172,7 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 			// The outline's runs between the cuts' ends are mostly those already fitted: the heart's own fits serve.
 			const unbent: GeneratorResult = { ...heart, ...finishConstruction(request, { ...construction, edges, geometry: compile(edges) }, heart.recipe, undefined, sharedFits) };
 			const bent = improveSharedConnections(unbent, { keepTemplate: true });
-			return { heart: bent, m: cutMeasures(bent.design, shown.rings, paper(bent.design)), edges };
+			return { heart: bent, m: cutMeasures(bent.design, rings, paper(bent.design)), edges };
 		} catch (error) {
 			refusal(error);
 		}
@@ -1173,11 +1180,16 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 	// The measures first, which are at hand; then each fault by itself (the measures add needles to weak places, and
 	// a needle less must not pay for a weak place more), the template shared to the millimetre, and the necks. The
 	// thinnest neck is no narrower at all where it would be under PAPER_NECK_MM: paper that may tear is not made to
-	// tear sooner for a shorter cut.
-	const thinnest = new WeakMap<HeartDesign, number>(), neck = (design: HeartDesign) => {
-		if (!thinnest.has(design)) thinnest.set(design, thinnestNeck(design));
+	// tear sooner for a shorter cut. Nor is either lobe's own thinnest, unless the heart's thinnest gets wider (a
+	// pig in Tern i spidserne at 50% kept its thinnest neck of 1.5 mm on one template while the other's went from
+	// 2.8 mm to 1.9; a penguin in Små motiver at 70% went from 1.2 and 2.1 mm to 1.4 on both, and may).
+	const thinnest = new WeakMap<HeartDesign, number[]>(), necks = (design: HeartDesign) => {
+		if (!thinnest.has(design)) thinnest.set(design, (['left', 'right'] as const).map(lobe => thinnestNeck(design, { lobes: [lobe] })));
 		return thinnest.get(design)!;
 	};
+	const neck = (design: HeartDesign) => Math.min(...necks(design));
+	const necksHold = (a: HeartDesign, b: HeartDesign) => neck(a) >= Math.min(neck(b), PAPER_NECK_MM) - 1e-9
+		&& (neck(a) > neck(b) + 1e-9 || necks(a).every((mm, k) => mm >= Math.min(necks(b)[k]!, PAPER_NECK_MM) - 1e-9));
 	const faulty = new WeakMap<HeartDesign, number[]>(), faults = (design: HeartDesign) => {
 		if (!faulty.has(design))
 			faulty.set(design, [paper(design).weak, paper(design).loose, ...cutTipCounts(design), Number(!lobesShareTemplate(design.fingers, design.gridSize))]);
@@ -1185,7 +1197,7 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 	};
 	const noWorse = (a: Drawn, b: Drawn) => a.m[0] <= b.m[0] && a.m[1] <= b.m[1] && a.m[2] <= b.m[2] && a.m[3] <= b.m[3] && a.m[4] < b.m[4]
 		&& (!a.heart.hardToCut || !!b.heart.hardToCut) && faults(a.heart.design).every((count, k) => count <= faults(b.heart.design)[k])
-		&& neckAsWide(a.heart.design, b.heart.design) && neck(a.heart.design) >= Math.min(neck(b.heart.design), PAPER_NECK_MM) - 1e-9;
+		&& neckAsWide(a.heart.design, b.heart.design) && necksHold(a.heart.design, b.heart.design);
 	const at = (p: Point) => `${p[0].toFixed(6)},${p[1].toFixed(6)}`, apart = (p: Point, q: Point) => Math.hypot(p[0] - q[0], p[1] - q[1]);
 	const onAxis = (p: Point) => Math.abs(p[0] - p[1]) < MIRROR_NEAR, flip = (p: Point): Point => [p[1], p[0]];
 	// What a cut's end costs where a paper's line turns back on itself into it: the edges at `p`, the cut leaving towards `to`.
@@ -1290,7 +1302,8 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 		const both = redrawn(made.edges, partner, mirrored);
 		return both && { edges: both.edges, cuts: [cutName(points), cutName(partner)] };
 	};
-	let best: Drawn = { heart, m: cutMeasures(heart.design, shown.rings, paper(heart.design)), edges: construction.edges }, draws = 0, fails = 0;
+	let best: Drawn = { heart, m: cutMeasures(heart.design, rings, paper(heart.design)), edges: construction.edges }, draws = 0, fails = 0;
+	let unhooked = false, held = 0;
 	let cuts = cutsOf(best.edges);
 	const ranked = (plain = false) => cuts.map(cut => ({ cut, way: wayOf(best.edges, cut, plain) }))
 		.filter((x): x is { cut: Cut; way: Option } => !!x.way).sort((x, y) => y.way.gain - x.way.gain);
@@ -1310,7 +1323,17 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 		if (!done.size) return heart;
 		const whole = draw(all);
 		draws++;
-		if (whole && noWorse(whole, best)) return whole.heart;
+		if (whole && noWorse(whole, best)) {
+			// Kept: the ways it left out (an end put nearest the other, where the plain ways were drawn) are tried on
+			// it one at a time, and kept where they also hook no end of a hidden cut more (see `cutHooks`: an end
+			// slid along the moon's inner curve on three strips at 90% made its cut 10 units shorter and left the
+			// circle's corner at a slant, bent into a hook there) and leave its thinnest neck as wide.
+			best = whole;
+			cuts = cutsOf(best.edges);
+			unhooked = true;
+			held = neck(best.heart.design);
+			break;
+		}
 		if (!bold) break;
 	}
 	// One at a time, the most gained first, until SHORTEN_FAILS were drawn and not kept; a way not kept is dropped.
@@ -1319,7 +1342,10 @@ function shortened(request: GeneratorRequest, heart: GeneratorResult): Generator
 		if (!top) break;
 		const made = applied(best.edges, top.cut.points, top.way, !best.m[1]), next = made && draw(made.edges);
 		if (made) draws++;
-		if (next && noWorse(next, best)) {
+		// After a kept round a way must also hook no end more, and leave the thinnest neck as wide as that round did,
+		// however wide: necks are held only up to NECK_ENOUGH, and a bird on three strips at 63%, tidied to hang by
+		// 4.8 mm, went to 4.0 for cuts a little shorter.
+		if (next && noWorse(next, best) && (!unhooked || (cutHooks(next.heart.design) <= cutHooks(best.heart.design) && neck(next.heart.design) > held - NECK_STEP))) {
 			best = next;
 			cuts = cutsOf(best.edges);
 		} else {

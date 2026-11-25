@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import type { Vec, BezierSegment, Finger } from '$lib/types/heart';
-import { cutTipCounts, cutTipPoints, cellTipCounts, fewerCutTips, cutMeasures, middleNeedleBases, middleNeedles } from './cutQuality';
+import { cutHooks, cutTipCounts, cutTipPoints, cellTipCounts, fewerCutTips, cutMeasures, middleNeedleBases, middleNeedles } from './cutQuality';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import type { HeartDesign } from '$lib/types/heart';
 import type { Ring } from './geometry';
@@ -87,3 +87,23 @@ it("holds the needles a heart's symmetry cuts as wide as their legs are apart wh
 	expect(Math.hypot(l![0]! - r![1]!, l![1]! - r![0]!)).toBeLessThan(1);
 });
 
+
+it('counts the ends of hidden cuts that leave off the straight line to their other end', () => {
+	// A cut both lobes make, from (0, 0) to (10, 0): straight it has no hook; leaving its first end 45° off the line, one;
+	// bent at both ends, two. A curve one lobe alone cuts is an outline, however it bends.
+	const both = (segment: BezierSegment): Finger[] => [{ id: 'a', lobe: 'left', segments: [segment] },
+		{ id: 'b', lobe: 'right', segments: [{ p0: segment.p3, p1: segment.p2, p2: segment.p1, p3: segment.p0 }] }];
+	const a = { x: 0, y: 0 }, b = { x: 10, y: 0 };
+	expect(cutHooks({ fingers: both(line(a, b)) })).toBe(0);
+	expect(cutHooks({ fingers: both({ p0: a, p1: { x: 2, y: 2 }, p2: { x: 7, y: 0 }, p3: b }) })).toBe(1);
+	expect(cutHooks({ fingers: both({ p0: a, p1: { x: 2, y: 2 }, p2: { x: 8, y: -2 }, p3: b }) })).toBe(2);
+	expect(cutHooks({ fingers: both({ p0: a, p1: { x: 2, y: .5 }, p2: { x: 7, y: 0 }, p3: b }) })).toBe(0);
+	expect(cutHooks({ fingers: [{ id: 'a', lobe: 'left', segments: [{ p0: a, p1: { x: 2, y: 2 }, p2: { x: 8, y: -2 }, p3: b }] }] })).toBe(0);
+});
+
+it('finds the hidden cuts with no picture as with it: where both lobes cut the same curve', () => {
+	// The star on five strips at 100%: the same turns along its hidden cuts whether its picture says where the
+	// colour is the same on both sides or the cuts themselves where both lobes make them.
+	const design = star.design as unknown as HeartDesign;
+	expect(cutMeasures(design, undefined)).toEqual(cutMeasures(design, star.rings as Ring[]));
+});

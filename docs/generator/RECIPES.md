@@ -377,12 +377,29 @@ and a penalty where a line and the cut make less than `HAIRPIN` degrees, and
 checked by the builder's cheap checks before a heart is drawn. Tried: every
 cut's best way at once; every cut's best way that moves no end on the motif;
 then one cut at a time, the most gained first, up to `SHORTEN_DRAWS` hearts or
-`SHORTEN_FAILS` not kept. A heart is kept only where no measure of
-`cutMeasures` is worse and its cuts are shorter, no fault by itself grows
-(weak places, loose paper, needles, sharp tips), it is not hard to cut where
-the other was not, its lobes still share a template to the millimetre where
-they did, no neck is narrower by `neckAsWide`, and its thinnest neck is no
-narrower at all where that is under 2 mm.
+`SHORTEN_FAILS` not kept, on the heart a round was kept for as on the first
+where none was (the round that put the star's cuts on the squares' corners at
+88% left its two cuts across the lower arms slanted: each is then put square
+to the arm's side). A heart is kept only where no measure of `cutMeasures` is
+worse and its cuts are shorter, no fault by itself grows (weak places, loose
+paper, needles, sharp tips), it is not hard to cut where the other was not,
+its lobes still share a template to the millimetre where they did, no neck is
+narrower by `neckAsWide`, and its thinnest neck is no narrower at all where
+that is under 2 mm; nor is either lobe's own thinnest, unless the heart's
+thinnest gets wider. What is tried after a kept round must also hook no end of
+a hidden cut more (`cutHooks`: an end leaving 30° or more off the straight
+line to the cut's other end, as a cut meeting an outline at a narrow angle is
+bent to leave it squarely) and leave the thinnest neck as wide as the round
+did, however wide: `neckAsWide` holds necks only up to `NECK_ENOUGH`, and
+step upon step a bird tidied to hang by 4.8 mm went to 4.0.
+
+A heart on a finer board than its frame's usual one has no picture known
+(`picture`), which `cutMeasures` reads the hidden cuts from, and is left as
+built (a third of the featured hearts in Stråler). Run there with the hidden
+cuts taken as those both lobes cut, the pass helps most (2026-11-25: weak
+places 26 → 17 over the 21 such hearts it changed in Stråler) but costs one
+to three seconds a heart, its trial hearts fitting the outline's runs anew:
+branch `claude/hooks-nopicture`, not on main.
 
 Measured on the 49 featured motifs (2026-11-24, against the hearts before):
 Cirkel · Lige store tern on five strips at seven sizes from 50 to 100%, 171 of
@@ -397,6 +414,17 @@ identity hearts 206 of 711 figures changed, none worse; their pictures differ
 by single cells along the outlines (at most 28 of the 25 600), where a cut's
 end is rounded into the outline at another place. A heart takes 0.03–0.1 s
 longer in most frames, about 0.3 s in Små motiver and on the board.
+
+Going on after a kept round, with the hook rule and each lobe's neck held
+(2026-11-25, the same 1960 hearts against those of the day before): 131
+changed, 27 of them on five strips, 18 on nine, 24 in Cirkel med dobbelt
+bort, 13 in Strålekrans. Over the changed hearts weak places went 1172 → 1141,
+hooked ends of hidden cuts 118 → 82, the cuts 2311 units shorter in all. No
+heart has a fault more or is newly refused, but the pig in Tern i spidserne at
+50%: it has the 2.8 mm neck of one template back that the pass had taken to
+1.9 mm, and with it one hooked end. Of the identity hearts 41 of 711 figures
+changed, none worse; all text hearts are as they were. A heart the pass goes
+on with takes up to 0.4 s longer.
 
 ## One recipe for each pair, on every board
 

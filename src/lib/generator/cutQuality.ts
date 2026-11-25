@@ -58,6 +58,33 @@ export function cutTipPoints(cuts: Cuts): Vec[] {
 	return points;
 }
 
+/** From how many degrees off the straight line to its other end a hidden cut's end counts as hooked (see `cutHooks`). */
+const HOOK = 30;
+
+/** The ends of a heart's hidden cuts (the curves both lobes cut) that are hooked:
+ * leaving HOOK degrees or more off the straight line to the curve's other end,
+ * as a cut meeting an outline at a narrow angle is bent to leave it squarely
+ * (see `curveSharedCuts`). A cut straight from end to end has none. */
+export function cutHooks(design: Pick<HeartDesign, 'fingers'>): number {
+	const named = (sg: Segment, back = false) => (back ? [sg.p3, sg.p2, sg.p1, sg.p0] : [sg.p0, sg.p1, sg.p2, sg.p3]).map(p => `${p.x.toFixed(6)},${p.y.toFixed(6)}`).join(' ');
+	const cutBy = new Map<string, Set<LobeId>>(), curves = new Map<string, Segment>();
+	for (const finger of design.fingers) for (const sg of finger.segments) {
+		const name = [named(sg), named(sg, true)].sort()[0];
+		if (!cutBy.has(name)) { cutBy.set(name, new Set()); curves.set(name, sg); }
+		cutBy.get(name)!.add(finger.lobe);
+	}
+	const off = (dx: number, dy: number, cx: number, cy: number) => Math.hypot(dx, dy) < 1e-9 ? 0 : Math.abs(Math.atan2(dx * cy - dy * cx, dx * cx + dy * cy)) * 180 / Math.PI;
+	let hooks = 0;
+	for (const [name, lobes] of cutBy) {
+		if (lobes.size < 2) continue;
+		const sg = curves.get(name)!, cx = sg.p3.x - sg.p0.x, cy = sg.p3.y - sg.p0.y;
+		if (Math.hypot(cx, cy) < 1e-9) continue;
+		if (off(sg.p1.x - sg.p0.x, sg.p1.y - sg.p0.y, cx, cy) >= HOOK) hooks++;
+		if (off(sg.p3.x - sg.p2.x, sg.p3.y - sg.p2.y, cx, cy) >= HOOK) hooks++;
+	}
+	return hooks;
+}
+
 export function fewerCutTips(a: [number, number], b: [number, number]): boolean {
 	return a[0] < b[0] || a[0] === b[0] && a[1] < b[1];
 }
@@ -67,10 +94,11 @@ export function fewerCutTips(a: [number, number], b: [number, number]): boolean 
  * `paperFaults`, and needles), whether its two lobes need templates of their
  * own (1) rather than sharing one (0, see `lobesDrawnAlike`), its sharp
  * tips, its turns of more than 25° along hidden cuts (where its picture, the
- * even–odd `rings` in the sheet's 100 units, has one colour on both sides),
+ * even–odd `rings` in the sheet's 100 units, has one colour on both sides;
+ * with no picture, where both lobes cut the very same curve),
  * and the length of all its cuts in those units. `paper` is its paper's
  * faults where the caller has them at hand. */
-export function cutMeasures(design: HeartDesign, rings: Ring[], paper: PaperFaults = paperFaults(design)): [number, number, number, number, number] {
+export function cutMeasures(design: HeartDesign, rings: Ring[] | undefined, paper: PaperFaults = paperFaults(design)): [number, number, number, number, number] {
 	const rect = inferOverlapRect(design.fingers, design.gridSize);
 	const unit = (x: number, y: number): Point => [(x - rect.left) / rect.width * 100, (y - rect.top) / rect.height * 100];
 	const colour = (x: number, y: number) => {
@@ -79,14 +107,22 @@ export function cutMeasures(design: HeartDesign, rings: Ring[], paper: PaperFaul
 			if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c ^= 1;
 		return c;
 	};
-	const sides = sidesByRow(rings);
+	const sides = sidesByRow(rings ?? []);
+	// With no picture, a cut is hidden where the other lobe cuts the very same curve.
+	const named = (sg: Segment, back = false) => (back ? [sg.p3, sg.p2, sg.p1, sg.p0] : [sg.p0, sg.p1, sg.p2, sg.p3]).map(p => `${p.x.toFixed(6)},${p.y.toFixed(6)}`).join(' ');
+	const cutBy = new Map<LobeId, Set<string>>();
+	if (!rings) for (const finger of design.fingers) for (const sg of finger.segments) {
+		if (!cutBy.has(finger.lobe)) cutBy.set(finger.lobe, new Set());
+		cutBy.get(finger.lobe)!.add(named(sg)).add(named(sg, true));
+	}
 	let length = 0, turns = 0;
 	for (const finger of design.fingers) {
 		if (!finger.id.includes('-cut-')) continue;
-		const pts: Point[] = [];
+		const pts: Point[] = [], both: boolean[] = [], others = cutBy.get(finger.lobe === 'left' ? 'right' : 'left');
 		for (const sg of finger.segments) for (let k = pts.length ? 1 : 0; k <= 8; k++) {
 			const t = k / 8, u = 1 - t, at = (c: 'x' | 'y') => u * u * u * sg.p0[c] + 3 * u * u * t * sg.p1[c] + 3 * u * t * t * sg.p2[c] + t * t * t * sg.p3[c];
 			pts.push(unit(at('x'), at('y')));
+			both.push(!!others?.has(named(sg)));
 		}
 		// Turns are looked for between points half a unit apart or more.
 		let last: number | null = null, from = pts[0];
@@ -95,7 +131,7 @@ export function cutMeasures(design: HeartDesign, rings: Ring[], paper: PaperFaul
 			if (!l) continue;
 			length += l;
 			const m = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2], n = [-(p[1] - q[1]) / l, (p[0] - q[0]) / l];
-			const hidden = colour(m[0] + .15 * n[0], m[1] + .15 * n[1]) === colour(m[0] - .15 * n[0], m[1] - .15 * n[1]);
+			const hidden = rings ? colour(m[0] + .15 * n[0], m[1] + .15 * n[1]) === colour(m[0] - .15 * n[0], m[1] - .15 * n[1]) : both[i];
 			if (Math.hypot(p[0] - from[0], p[1] - from[1]) < .5) continue;
 			const direction = Math.atan2(p[1] - from[1], p[0] - from[0]);
 			if (last !== null && hidden) {
