@@ -527,6 +527,7 @@
             galleryHref={design ? homeAnchorHref(makeHeartAnchorId(design.id), lang) : ''}
             {shareStatus}
             pinHref={isGalleryPage ? pinterestPinUrl(heartId) : null}
+            pdfHref={isGalleryPage ? templatePdfPath(heartId) : null}
             onDownload={handleDownload}
             onEdit={handleEdit}
             onShare={handleShare}
@@ -560,6 +561,7 @@
               galleryHref={design ? homeAnchorHref(makeHeartAnchorId(design.id), lang) : ''}
               {shareStatus}
               pinHref={isGalleryPage ? pinterestPinUrl(heartId) : null}
+              pdfHref={isGalleryPage ? templatePdfPath(heartId) : null}
               onDownload={handleDownload}
               onEdit={handleEdit}
               onShare={handleShare}

@@ -1,10 +1,16 @@
 /**
- * The hearts whose template the build also writes as a PDF file
- * (src/routes/skabelon): a trial with four of the most visited, 2026-11-24.
+ * Every gallery heart's template is also a PDF file the build writes
+ * (src/routes/skabelon), so it has an address a search engine or an AI
+ * assistant can link to and read. A trial with four hearts 2026-11-24, all of
+ * them since 2026-11-25.
  */
-export const TEMPLATE_PDF_HEARTS: readonly string[] = ['classic-3x3', 'stjerne', 'jul', 'nemt-hjerte'];
+import { ALL_HEART_IDS } from '$lib/data/categories';
 
-/** The file's path on the site, or null for a heart without one. */
+export const TEMPLATE_PDF_HEARTS: readonly string[] = ALL_HEART_IDS;
+
+const HAS_PDF = new Set(TEMPLATE_PDF_HEARTS);
+
+/** The file's path on the site, or null for a heart without one (a visitor's own, a shared one). */
 export function templatePdfPath(id: string): string | null {
-	return TEMPLATE_PDF_HEARTS.includes(id) ? `/skabelon/${id}.pdf` : null;
+	return HAS_PDF.has(id) ? `/skabelon/${id}.pdf` : null;
 }

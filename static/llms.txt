@@ -17,7 +17,7 @@
 
 ## Template files
 
-A few templates are also plain PDF files (A4, the heart 80 mm wide), each linked from its heart's page; every other heart's PDF is made by the "Hent skabelon" button on its page.
+Every gallery heart's template is also a plain PDF file (A4, the heart 80 mm wide, text in Danish) at `https://juleflet.dk/skabelon/<id>.pdf`, where `<id>` is the last part of the heart's page address. The "Hent skabelon" button on a heart's page links to it. For example:
 
 - [Klassisk 3×3](https://juleflet.dk/skabelon/classic-3x3.pdf)
 - [Stjerne](https://juleflet.dk/skabelon/stjerne.pdf)

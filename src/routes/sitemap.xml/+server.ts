@@ -66,7 +66,7 @@ ${images.map((image) => `    <image:image>\n      <image:loc>${image}</image:loc
 		);
 	});
 
-	// The templates that are also PDF files (a trial, $lib/templatePdf), dated as their heart.
+	// The templates that are also PDF files ($lib/templatePdf), dated as their heart.
 	for (const id of TEMPLATE_PDF_HEARTS) {
 		const lastmod = dates?.hearts.get(id) ?? null;
 		urls.push(`  <url>

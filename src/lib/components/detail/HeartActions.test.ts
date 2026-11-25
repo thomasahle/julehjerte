@@ -3,7 +3,7 @@
  * prerendered HTML has them disabled with a reason (pages-edges QA 7: without
  * JavaScript they were enabled and did nothing); the browser turns them on.
  */
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import HeartActions from './HeartActions.svelte';
 
@@ -52,5 +52,29 @@ describe('HeartActions', () => {
 			expect(button.disabled).toBe(false);
 			expect(button.hasAttribute('title')).toBe(false);
 		}
+	});
+
+	// A gallery heart: the template is also a file (src/routes/skabelon), and the button is a link to it.
+	it('links "Hent skabelon" to the PDF file, and opens the dialog instead once mounted', () => {
+		const target = document.createElement('div');
+		document.body.append(target);
+		const onDownload = vi.fn();
+		component = mount(HeartActions, { target, props: { ...props, pdfHref: '/skabelon/stjerne.pdf', onDownload } });
+		const link = target.querySelector<HTMLAnchorElement>('a.get')!;
+		expect(link.getAttribute('href')).toBe('/skabelon/stjerne.pdf');
+		expect(link.textContent?.replace(/\s+/g, ' ').trim()).toBe('Hent skabelon Hent PDF');
+		expect(target.querySelector('button.get')).toBeNull();
+
+		// Before the script runs the link is followed.
+		const before = new MouseEvent('click', { bubbles: true, cancelable: true });
+		link.addEventListener('click', (event) => event.preventDefault(), { once: true });
+		link.dispatchEvent(before);
+		expect(onDownload).not.toHaveBeenCalled();
+
+		flushSync();
+		const after = new MouseEvent('click', { bubbles: true, cancelable: true });
+		link.dispatchEvent(after);
+		expect(after.defaultPrevented).toBe(true);
+		expect(onDownload).toHaveBeenCalledTimes(1);
 	});
 });

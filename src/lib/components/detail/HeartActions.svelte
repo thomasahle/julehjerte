@@ -28,6 +28,12 @@
 		shareStatus: 'idle' | 'copied' | 'error';
 		/** The heart's Pin on Pinterest, where it can be commented on; null for a heart without one. */
 		pinHref?: string | null;
+		/**
+		 * The template as a PDF file ($lib/templatePdf), for a gallery heart. "Hent skabelon" is then a
+		 * link to it, which works without the page's script and gives a reader of the HTML the file's
+		 * address; with the script the click opens the dialog instead.
+		 */
+		pdfHref?: string | null;
 		/** Opens the "Hent skabelon" dialog. */
 		onDownload: (event: MouseEvent) => void;
 		onEdit: () => void;
@@ -53,6 +59,7 @@
 		galleryHref = '',
 		shareStatus,
 		pinHref = null,
+		pdfHref = null,
 		onDownload,
 		onEdit,
 		onShare,
@@ -70,6 +77,12 @@
 		hydrated = true;
 	});
 	let waitTitle = $derived(hydrated ? undefined : t('needsJavaScript', lang));
+
+	function openDialog(event: MouseEvent) {
+		if (!hydrated) return;   // the link is followed: the file itself
+		event.preventDefault();
+		onDownload(event);
+	}
 </script>
 
 <!-- One row: the two ways to get the template (download it, or trace it from
@@ -87,18 +100,25 @@
 		{/if}
 	{/if}
 	{#if part === 'rest'}
-	<button
-		class="btn btn-primary get"
-		type="button"
-		onclick={onDownload}
-		disabled={!hasDesign || !hydrated}
-		title={waitTitle}
-	>
+	{#snippet getLabel()}
 		<DownloadIcon size={18} />
 		<!-- A phone says what the button gives, a PDF, next to the red "Tegn af". -->
 		<span class="wide">{t('getTemplate', lang)}</span>
 		<span class="narrow">{t('getTemplatePhone', lang)}</span>
-	</button>
+	{/snippet}
+	{#if pdfHref && hasDesign}
+		<a class="btn btn-primary get" href={pdfHref} onclick={openDialog}>{@render getLabel()}</a>
+	{:else}
+		<button
+			class="btn btn-primary get"
+			type="button"
+			onclick={onDownload}
+			disabled={!hasDesign || !hydrated}
+			title={waitTitle}
+		>
+			{@render getLabel()}
+		</button>
+	{/if}
 	{/if}
 	<button
 		class="btn btn-outline trace"

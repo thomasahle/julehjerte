@@ -4,8 +4,9 @@
  * (80 mm wide on A4, one heart, with its picture), written by the build.
  *
  * The dialog makes its PDF in the browser, so there was no file a search
- * engine or an AI assistant could link to or read. A trial with a few hearts
- * (2026-11-24); `TRIAL_HEARTS` is the list.
+ * engine or an AI assistant could link to or read. The heart page's "Hent
+ * skabelon" button is a link to this file, which the page's script turns into
+ * the dialog.
  */
 import { error } from '@sveltejs/kit';
 import { createCanvas, loadImage } from 'canvas';
