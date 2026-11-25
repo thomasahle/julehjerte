@@ -12,6 +12,8 @@ collection, "Mine hjerter" (English: "My hearts"). Save it as a skill file, or j
 Everything here was tried on the live site. The site is in Danish at `/` and in English under `/en/`;
 button names below are the English ones with the Danish in brackets.
 
+An overview of the site's pages and files, and where each template's PDF is: [llms.txt](https://juleflet.dk/llms.txt).
+
 ## 1. What a woven heart is
 
 Two pieces of paper in two colours, each folded once and cut into strips from the fold. The strips of one
