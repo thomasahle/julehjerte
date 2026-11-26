@@ -89,6 +89,7 @@
 	let config = $state<GeneratorState>({ ...defaults, ...(pageMode ? { mode: pageMode } : {}) });
 	let mounted = $state(false),
 		catalog = $state<CatalogItem[]>([]),
+		motifList = $state<HTMLDivElement>(),
 		query = $state(''),
 		limit = $state(24),
 		retry = $state(0);
@@ -507,6 +508,16 @@
 			live = false;
 		};
 	});
+	// The list shows the chosen figure: a link may name one far down it. Only the list scrolls, never the page.
+	$effect(() => {
+		void config.motif;
+		void groups;
+		void query;
+		const pressed = motifList?.querySelector('button[aria-pressed="true"]');
+		if (!motifList || !pressed) return;
+		const list = motifList.getBoundingClientRect(), button = pressed.getBoundingClientRect();
+		if (button.top < list.top || button.bottom > list.bottom) motifList.scrollTop += button.top - list.top - (list.height - button.height) / 2;
+	});
 	$effect(() => {
 		if (!mounted) return;
 		const snapshot = { ...config };
@@ -902,7 +913,7 @@
 					<button class="btn btn-outline" onclick={() => retry++}
 						>{t('generatorRetry', lang)}</button
 					>{/if}
-				<div class="motif-list">
+				<div class="motif-list" bind:this={motifList}>
 					{#if query.trim()}<div class="motifs">
 							{#each matches.slice(0, limit) as item (item.id)}{@render motifButton(
 									item
