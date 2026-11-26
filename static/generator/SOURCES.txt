@@ -14,7 +14,7 @@ License and author attribution: phosphor-LICENSE.txt.
 Only names ending in -fill are included, with the suffix removed.
 The catalogue retains the original SVG preview geometry. The individual JSON
 files contain flattened, normalised contours derived from those SVGs.
-Fifteen simple motifs, among them a nisse, a julebuk and an angel, and the
+Sixteen simple motifs, among them a nisse, a julebuk, an angel and a turkey, and the
 Danish search aliases are authored for Juleflet.
 
 Additional motifs: 1,088 filled Tabler icons.
