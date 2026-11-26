@@ -10136,7 +10136,7 @@
     "id": "falke",
     "name": "Falke",
     "names": {"en":"Falcons"},
-    "author": "Thomas Ahle & Claude",
+    "author": "Thomas Ahle",
     "date": "2026-11-26",
     "weaveParity": 1,
     "gridSize": {"x":6,"y":6},
