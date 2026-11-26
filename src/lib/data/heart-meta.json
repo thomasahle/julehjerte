@@ -2915,6 +2915,33 @@
       "bytes": 2501987
     }
   },
+  "falke": {
+    "name": "Falke",
+    "names": {
+      "en": "Falcons"
+    },
+    "author": "Thomas Ahle & Claude",
+    "authorUrl": null,
+    "publisher": null,
+    "publisherUrl": null,
+    "source": null,
+    "date": "2026-11-26",
+    "description": null,
+    "gridSize": {
+      "x": 6,
+      "y": 6
+    },
+    "difficulty": "expert",
+    "symmetry": {
+      "isClassic": false,
+      "curveSymmetry": false,
+      "lobeSymmetry": false,
+      "mirrorSymmetry": false,
+      "sharedTemplate": false
+    },
+    "photo": null,
+    "film": null
+  },
   "god-jul": {
     "name": "GOD JUL",
     "author": "Thomas Ahle & Claude",

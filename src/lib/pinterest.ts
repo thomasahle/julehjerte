@@ -73,7 +73,8 @@ export const PINTEREST_FIRST = ['classic-3x3', 'gaver', 'jul', 'juletrae', 'stje
  * on 2026-10-29 between Explosion and Flyvende gæs, which moved every later heart
  * one day on.
  * Hjertepude went in on 2026-11-12 at day 36, between Ni ruder and Puslespil,
- * which again moved every later heart one day on.
+ * which again moved every later heart one day on. Falke went in on 2026-11-26 at
+ * day 37, the day after Hjertepude, and moved every later heart one day on.
  */
 export const PINTEREST_ORDER: readonly string[] = [
 	'classic-3x3', 'juletrae', 'circle', 'gaver', 'balls', 'jul',
@@ -81,7 +82,7 @@ export const PINTEREST_ORDER: readonly string[] = [
 	'god-jul', 'amy-weave-1', 'flower', 'amy-weave-2', 'triple-heart', 'amy-rosette',
 	'5star', 'amy-pattern', 'venus', 'amy-flowering', 'simple-5star', 'amy-pinecone',
 	'h4h2', 'tak', 'alhambra', 'kompasrose', 'angel', 'squares', 'sun', 'ni-hjerter-i-tern',
-	'stjerneblomst', 'sildeben', 'snowflake', 'ni-ruder', 'hjertepude', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
+	'stjerneblomst', 'sildeben', 'snowflake', 'ni-ruder', 'hjertepude', 'falke', 'puslespil', 'fire-stjerner', 'permo-sol', 'koelbuer', 'nemt-hjerte',
 	'roserude', 'santa', 'andreaskors', 'hanefod', 'ni-firkanter', 'explosion', 'kronblade', 'flyvendegaes', 'kors-i-ramme', 'mor-og-barn',
 	'origami', 'potteplante', 'nihon', 'drageskael', 'hjerte-i-hjerte-i-hjerte', 'firkant-i-firkant', 'mor-far', 'dagognat', 'hermanngitter',
 	'lilje1', 'tragt', 'davidsstjerne-circ', 'boelgebrud', 'ball', 'glaskuppel',

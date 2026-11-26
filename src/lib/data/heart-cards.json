@@ -647,6 +647,13 @@
     },
     "difficulty": "medium"
   },
+  "falke": {
+    "name": "Falke",
+    "names": {
+      "en": "Falcons"
+    },
+    "difficulty": "expert"
+  },
   "god-jul": {
     "name": "GOD JUL",
     "difficulty": "expert"

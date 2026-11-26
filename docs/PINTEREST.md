@@ -100,7 +100,8 @@ on every page (commit 81e1bdfe). To replace the value, edit that line.
   Penrose-stjerner (between Rød blomst and Bølger) went in on 2026-11-01, so
   the hearts after each moved another day. Hjertepude went in on 2026-11-12 at
   day 36 (2026-11-26), between Ni ruder and Puslespil, and the hearts after it
-  moved one day on.
+  moved one day on. Falke went in on 2026-11-26 at day 37 (2026-11-27), after
+  Hjertepude, and the hearts after it moved one day on.
 - The feed holds the released items only (nothing future-dated), newest first,
   at most 30 (`PINTEREST_MAX_ITEMS`). When every heart is out, the feed stops
   growing: it does not cycle.
